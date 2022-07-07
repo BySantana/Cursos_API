@@ -9,5 +9,7 @@ namespace Cursos_API.Application.Dtos
         public CursoDto Curso { get; set; }
         public DateTime DataInclusao { get; set; }
         public DateTime DataAtualizacao { get; set; }
+        public int UserId { get; set; }
+        public UserDto User { get; set; }
     }
 }

@@ -59,7 +59,7 @@ namespace Cursos_API.Application
             }
         }
 
-        public async Task<CursoDto> DeleteCurso(int userId, int cursoId)
+        public async Task<bool> DeleteCurso(int userId, int cursoId)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace Cursos_API.Application
                 {
                     var cursoRetorno = await _cursoPersist.GetCursoByIdAsync(curso.CursoId);
 
-                    return _mapper.Map<CursoDto>(cursoRetorno);
+                    return true;
                 }
                 throw new Exception("Não foi possível deletar este curso");
             }

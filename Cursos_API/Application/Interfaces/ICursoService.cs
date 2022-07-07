@@ -8,7 +8,7 @@ namespace Cursos_API.Application.Interfaces
     {
         Task<CursoDto> AddCurso(int userId, CursoDto model);
         Task<CursoDto> UpdateCurso(int userId, int cursoId, CursoDto model);
-        Task<CursoDto> DeleteCurso(int userId, int cursoId);
+        Task<bool> DeleteCurso(int userId, int cursoId);
 
 
         Task<CursoDto> GetCursoByIdAsync(int cursoId);

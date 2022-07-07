@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Cursos_API.Application.Dtos;
+using Cursos_API.Application.Interfaces;
 using Cursos_API.Models.Identity;
 using Cursos_API.Persistence.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Cursos_API.Application
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
@@ -62,7 +63,10 @@ namespace Cursos_API.Application
             }
         }
 
-       
+        public Task<UserUpdateDto> GetUserByUserNameAsync(string userName)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<UserUpdateDto> UpdateAccount(UserUpdateDto userUpdateDto)
         {
