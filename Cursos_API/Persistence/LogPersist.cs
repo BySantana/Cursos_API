@@ -18,8 +18,7 @@ namespace Cursos_API.Persistence
         public async Task<Log[]> GetAllLogsAsync()
         {
             IQueryable<Log> query = _context.Logs
-                .Include(l => l.Curso)
-                .Include(u => u.User);
+                .Include(l => l.Curso);
 
 
             return await query.ToArrayAsync();
@@ -35,15 +34,14 @@ namespace Cursos_API.Persistence
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Log[]> GetLogsByCursoIdAsync(int cursoId)
+        public async Task<Log> GetLogByCursoIdAsync(int cursoId)
         {
             IQueryable<Log> query = _context.Logs
-                .Include(l => l.Curso)
-                .Include(u => u.User);
+                .Include(l => l.Curso);
 
             query = query.Where(x => x.CursoId == cursoId);
 
-            return await query.ToArrayAsync();
+            return await query.FirstOrDefaultAsync();
         }
     }
 }
