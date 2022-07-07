@@ -63,9 +63,20 @@ namespace Cursos_API.Application
             }
         }
 
-        public Task<UserUpdateDto> GetUserByUserNameAsync(string userName)
+        public async Task<UserUpdateDto> GetUserByUserNameAsync(string userName)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await _userPersist.GetUserByUserNameAsync(userName);
+                if (user == null) return null;
+
+                var userUpdateDto = _mapper.Map<UserUpdateDto>(user);
+                return userUpdateDto;
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception($"Erro ao tentar pegar Usuário por Username. Erro: {ex.Message}");
+            }
         }
 
         public async Task<UserUpdateDto> UpdateAccount(UserUpdateDto userUpdateDto)

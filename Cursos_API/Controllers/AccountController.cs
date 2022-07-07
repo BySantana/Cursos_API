@@ -10,6 +10,9 @@ using Cursos_API.Controllers.Extensions;
 
 namespace Cursos_API.Controllers
 {
+    [Authorize]
+    [ApiController]
+    [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;

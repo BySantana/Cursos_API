@@ -36,8 +36,8 @@ namespace Cursos_API.Persistence
 
         public async Task<Log> GetLogByCursoIdAsync(int cursoId)
         {
-            IQueryable<Log> query = _context.Logs
-                .Include(l => l.Curso);
+            IQueryable<Log> query = _context.Logs;
+                //.Include(l => l.Curso);
 
             query = query.Where(x => x.CursoId == cursoId);
 

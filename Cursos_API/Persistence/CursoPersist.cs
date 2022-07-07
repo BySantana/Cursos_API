@@ -54,8 +54,8 @@ namespace Cursos_API.Persistence
 
         public async Task<Curso> GetCursoByIdAsync(int cursoId)
         {
-            IQueryable<Curso> query = _context.Cursos
-                .Include(i => i.Categoria);
+            IQueryable<Curso> query = _context.Cursos;
+                //.Include(i => i.Categoria);
 
             query = query.Where(w => w.CursoId == cursoId &&
                                 w.Status == true);

@@ -33,7 +33,7 @@ namespace Cursos_API.Application
                 var resuDataInicio = await _cursoPersist.GetAllCursosByDataAsync(curso.DataInicio);
                 var resuDataTermino = await _cursoPersist.GetAllCursosByDataAsync(curso.DataTermino);
 
-                if (resuDataInicio != null || resuDataTermino != null) throw new Exception("Existe(m) curso(s) planejados(s) dentro do período informado.");
+                if (resuDataInicio.Length > 0 || resuDataTermino.Length > 0) throw new Exception("Existe(m) curso(s) planejados(s) dentro do período informado.");
 
                 if (curso.DataInicio >= DateTime.Now &&
                     curso.DataTermino > curso.DataInicio)
@@ -44,7 +44,16 @@ namespace Cursos_API.Application
                     {
                         LogDto logModel = new LogDto();
                         logModel.DataInclusao = DateTime.Now;
-                        await _logService.AddLog(curso.CursoId, logModel);
+                        logModel.UserId = userId;
+                        var resu = await _logService.AddLog(curso.CursoId, logModel);
+                        if(resu)
+                        {
+                            return model;
+                        }
+                        else
+                        {
+                            throw new Exception("Não foi possível registrar o log");
+                        }
                     }
                     else
                     {
@@ -152,31 +161,39 @@ namespace Cursos_API.Application
                 if (curso == null) return null;
 
                 model.CursoId = cursoId;
+                model.UserId = userId;
 
                 var resuDataInicio = await _cursoPersist.GetAllCursosByDataAsync(model.DataInicio);
                 var resuDataTermino = await _cursoPersist.GetAllCursosByDataAsync(model.DataTermino);
 
-                if (resuDataInicio != null || resuDataTermino != null) throw new Exception(
+                if (resuDataInicio.Length > 0 || resuDataTermino.Length > 0) throw new Exception(
                     "Existe(m) curso(s) planejados(s) dentro do período informado.");
 
                 _mapper.Map(model, curso);
 
-                _geralPersist.Update(curso);
 
                 if (curso.DataInicio >= DateTime.Now &&
                     curso.DataTermino > curso.DataInicio)
                 {
-                    _geralPersist.Add(curso);
+                    _geralPersist.Update(curso);
 
                     if (await _geralPersist.SaveChangesAsync())
                     {
                         LogDto logModel = await _logService.GetLogByCursoIdAsync(curso.CursoId);
                         logModel.DataAtualizacao = DateTime.Now;
-                        await _logService.UpdateLog(curso.CursoId, logModel);
+                        var resu = await _logService.UpdateLog(curso.CursoId, logModel);
+                        if (resu)
+                        {
+                            return model;
+                        }
+                        else
+                        {
+                            throw new Exception("Não foi possível atualizar o log");
+                        }
                     }
                     else
                     {
-                        throw new Exception("Não foi possível atualizar o log");
+                        throw new Exception("Não foi possível atualizar o curso");
                     }
                 }
                 throw new Exception("Data não permitida por já ser uma data passada");

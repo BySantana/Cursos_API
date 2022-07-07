@@ -28,7 +28,7 @@ namespace Cursos_API.Application
                 var log = _mapper.Map<Log>(model);
                 log.CursoId = cursoId;
                 
-                _geralPersist.Add<Log>(log);
+                _geralPersist.Add(log);
 
                 if(await _geralPersist.SaveChangesAsync())
                 {

@@ -73,7 +73,7 @@ namespace Cursos_API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar adicionar eventos. Erro: {ex.Message}");
+                    $"Erro ao tentar adicionar curso. Erro: {ex.Message}");
             }
         }
 
