@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Cursos_API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CursoController : ControllerBase
@@ -24,7 +25,6 @@ namespace Cursos_API.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
             try
@@ -42,7 +42,6 @@ namespace Cursos_API.Controllers
         }
 
         [HttpGet("curso/{id}")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -60,7 +59,6 @@ namespace Cursos_API.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> Post(CursoDto model)
         {
             try
@@ -78,7 +76,6 @@ namespace Cursos_API.Controllers
         }
 
         [HttpPut("put/{cursoId}")]
-        [AllowAnonymous]
         public async Task<IActionResult> Put(int cursoId, CursoDto model)
         {
             try
@@ -96,7 +93,6 @@ namespace Cursos_API.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [AllowAnonymous]
         public async Task<IActionResult> Delete(int id)
         {
             try

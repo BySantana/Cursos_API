@@ -46,7 +46,7 @@ namespace Cursos_API.Application
                         logModel.DataInclusao = DateTime.Now;
                         logModel.UserId = userId;
                         var resu = await _logService.AddLog(curso.CursoId, logModel);
-                        if(resu)
+                        if (resu)
                         {
                             return model;
                         }
@@ -163,11 +163,15 @@ namespace Cursos_API.Application
                 model.CursoId = cursoId;
                 model.UserId = userId;
 
-                var resuDataInicio = await _cursoPersist.GetAllCursosByDataAsync(model.DataInicio);
-                var resuDataTermino = await _cursoPersist.GetAllCursosByDataAsync(model.DataTermino);
+                if (model.DataInicio != curso.DataInicio || model.DataTermino != curso.DataTermino)
+                {
+                    var resuDataInicio = await _cursoPersist.GetAllCursosByDataAsync(model.DataInicio);
+                    var resuDataTermino = await _cursoPersist.GetAllCursosByDataAsync(model.DataTermino);
 
-                if (resuDataInicio.Length > 0 || resuDataTermino.Length > 0) throw new Exception(
-                    "Existe(m) curso(s) planejados(s) dentro do período informado.");
+                    if (resuDataInicio.Length > 0 || resuDataTermino.Length > 0) throw new Exception(
+                        "Existe(m) curso(s) planejados(s) dentro do período informado.");
+                }
+
 
                 _mapper.Map(model, curso);
 
