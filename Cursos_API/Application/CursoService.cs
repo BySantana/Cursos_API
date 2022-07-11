@@ -30,10 +30,11 @@ namespace Cursos_API.Application
                 var curso = _mapper.Map<Curso>(model);
                 curso.UserId = userId;
 
-                var resuDataInicio = await _cursoPersist.GetAllCursosByDataAsync(curso.DataInicio);
-                var resuDataTermino = await _cursoPersist.GetAllCursosByDataAsync(curso.DataTermino);
+                var resuTitulo = await _cursoPersist.GetCursoByTitulo(curso.CursoNome);
+                if (resuTitulo.Length > 0 ) throw new Exception("Já existem cursos com este nome.");
 
-                if (resuDataInicio.Length > 0 || resuDataTermino.Length > 0) throw new Exception("Existe(m) curso(s) planejados(s) dentro do período informado.");
+                var resuQuery = await _cursoPersist.GetAllCursosByDatasAsync(curso.DataInicio, curso.DataTermino);
+                if(resuQuery.Length > 0) throw new Exception("Existe(m) curso(s) planejados(s) dentro do período informado.");
 
                 if (curso.DataInicio >= DateTime.Now &&
                     curso.DataTermino > curso.DataInicio)
@@ -74,7 +75,7 @@ namespace Cursos_API.Application
             {
                 var curso = await _cursoPersist.GetCursoByIdAsync(cursoId);
                 if (curso == null) throw new Exception("Curso para delete não encontrado");
-                if (curso.DataInicio < DateTime.Now) throw new Exception(
+                if (curso.DataInicio <= DateTime.Now) throw new Exception(
                     "Este curso não pode ser deletado pois já foi finalizado ou está em andamento.");
 
                 curso.Status = false;
@@ -163,12 +164,12 @@ namespace Cursos_API.Application
                 model.CursoId = cursoId;
                 model.UserId = userId;
 
-                if (model.DataInicio != curso.DataInicio || model.DataTermino != curso.DataTermino)
+                if ( (model.DataInicio < curso.DataInicio || model.DataInicio > curso.DataTermino) && 
+                     (model.DataInicio > curso.DataInicio || model.DataInicio > curso.DataTermino) )
                 {
-                    var resuDataInicio = await _cursoPersist.GetAllCursosByDataAsync(model.DataInicio);
-                    var resuDataTermino = await _cursoPersist.GetAllCursosByDataAsync(model.DataTermino);
+                    var resuQuery = await _cursoPersist.GetAllCursosByDatasAsync(model.DataInicio, model.DataTermino);
 
-                    if (resuDataInicio.Length > 0 || resuDataTermino.Length > 0) throw new Exception(
+                    if (resuQuery.Length > 0) throw new Exception(
                         "Existe(m) curso(s) planejados(s) dentro do período informado.");
                 }
 

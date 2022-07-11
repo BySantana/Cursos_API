@@ -33,12 +33,28 @@ namespace Cursos_API.Persistence
                 .Include(i => i.Categoria)
                 .Include(i => i.User);
 
-            query = query.Where(w => w.DataInicio <= data && 
-                                w.DataTermino >= data && 
+            query = query.Where(w => w.DataInicio <= data &&
+                                w.DataTermino >= data &&
                                 w.Status == true);
 
             return await query.ToArrayAsync();
         }
+
+        public async Task<Curso[]> GetAllCursosByDatasAsync(DateTime dataInicio, DateTime dataFinal)
+        {
+            IQueryable<Curso> query = _context.Cursos
+                .Include(i => i.Categoria)
+                .Include(i => i.User);
+
+            query = query.Where(w => ((dataInicio >= w.DataInicio && dataInicio <= w.DataTermino) ||
+                                     (dataFinal >= w.DataInicio && dataFinal <= w.DataTermino) ||
+                                     (w.DataInicio >= dataInicio && w.DataInicio <= dataFinal)) &&
+                                     (w.Status == true));
+
+            return await query.ToArrayAsync();
+        }
+
+        
 
         public async Task<Curso[]> GetAllCursosByUserIdAsync(int userId)
         {
@@ -61,6 +77,15 @@ namespace Cursos_API.Persistence
                                 w.Status == true);
 
             return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Curso[]> GetCursoByTitulo(string titulo)
+        {
+            IQueryable<Curso> query = _context.Cursos;
+
+            query = query.Where(w => w.CursoNome.ToLower() == titulo.ToLower());
+
+            return await query.ToArrayAsync();
         }
     }
 }

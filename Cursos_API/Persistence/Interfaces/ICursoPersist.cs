@@ -10,6 +10,7 @@ namespace Cursos_API.Persistence.Interfaces
         Task<Curso[]> GetAllCursosAsync();
         Task<Curso[]> GetAllCursosByUserIdAsync(int userId);
         Task<Curso[]> GetAllCursosByDataAsync(DateTime data);
-
+        Task<Curso[]> GetAllCursosByDatasAsync(DateTime dataInicio, DateTime dataFinal);
+        Task<Curso[]> GetCursoByTitulo(string titulo);
     }
 }
