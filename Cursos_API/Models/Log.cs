@@ -12,5 +12,6 @@ namespace Cursos_API.Models
         public DateTime? DataAtualizacao { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        public string Status { get; set; }
     }
 }

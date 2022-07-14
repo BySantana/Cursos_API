@@ -39,7 +39,7 @@ namespace Cursos_API.Application
                 if (resuQuery.Length > 0) throw new Exception("Existe(m) curso(s) planejados(s) dentro do período informado.");
 
                 if (curso.DataInicio >= DateTime.Now &&
-                    curso.DataTermino > curso.DataInicio)
+                    curso.DataTermino >= curso.DataInicio)
                 {
                     _geralPersist.Add(curso);
 
@@ -48,6 +48,7 @@ namespace Cursos_API.Application
                         LogDto logModel = new LogDto();
                         logModel.DataInclusao = DateTime.Now;
                         logModel.UserId = userId;
+                        logModel.Status = "Curso adicionado";
                         var resu = await _logService.AddLog(curso.CursoId, logModel);
                         if (resu)
                         {
@@ -86,6 +87,10 @@ namespace Cursos_API.Application
 
                 if (await _geralPersist.SaveChangesAsync())
                 {
+                    LogDto logModel = await _logService.GetLogByCursoIdAsync(curso.CursoId);
+                    logModel.DataAtualizacao = DateTime.Now;
+                    logModel.Status = "Curso excluído";
+                    var resu = await _logService.UpdateLog(curso.CursoId, logModel);
                     var cursoRetorno = await _cursoPersist.GetCursoByIdAsync(curso.CursoId);
 
                     return true;
@@ -186,7 +191,7 @@ namespace Cursos_API.Application
                 if (curso == null) return null;
 
                 model.CursoId = cursoId;
-                model.UserId = userId;
+                model.UserId = curso.UserId;
 
                     var resuQuery = await _cursoPersist.GetCursosByDatasForUpdateAsync(cursoId, model.DataInicio, model.DataTermino);
 
@@ -198,7 +203,7 @@ namespace Cursos_API.Application
 
 
                 if (curso.DataInicio >= DateTime.Now &&
-                    curso.DataTermino > curso.DataInicio)
+                    curso.DataTermino >= curso.DataInicio)
                 {
                     _geralPersist.Update(curso);
 
@@ -206,6 +211,7 @@ namespace Cursos_API.Application
                     {
                         LogDto logModel = await _logService.GetLogByCursoIdAsync(curso.CursoId);
                         logModel.DataAtualizacao = DateTime.Now;
+                        logModel.Status = "Curso atualizado";
                         var resu = await _logService.UpdateLog(curso.CursoId, logModel);
                         if (resu)
                         {

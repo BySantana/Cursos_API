@@ -11,5 +11,6 @@ namespace Cursos_API.Application.Dtos
         public DateTime? DataAtualizacao { get; set; }
         public int UserId { get; set; }
         public UserDto User { get; set; }
+        public string Status { get; set; }
     }
 }
