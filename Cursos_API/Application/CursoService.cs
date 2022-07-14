@@ -48,7 +48,7 @@ namespace Cursos_API.Application
                         LogDto logModel = new LogDto();
                         logModel.DataInclusao = DateTime.Now;
                         logModel.UserId = userId;
-                        logModel.Status = "Curso adicionado";
+                        logModel.Status = "Curso criado";
                         var resu = await _logService.AddLog(curso.CursoId, logModel);
                         if (resu)
                         {
