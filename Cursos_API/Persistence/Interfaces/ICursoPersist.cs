@@ -12,5 +12,6 @@ namespace Cursos_API.Persistence.Interfaces
         Task<Curso[]> GetAllCursosByDataAsync(DateTime data);
         Task<Curso[]> GetAllCursosByDatasAsync(DateTime dataInicio, DateTime dataFinal);
         Task<Curso[]> GetCursoByTitulo(string titulo);
+        Task<Curso[]> GetCursosByDatasForUpdateAsync(int cursoId, DateTime dataInicio, DateTime dataFinal);
     }
 }

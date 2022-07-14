@@ -30,11 +30,13 @@ namespace Cursos_API.Application
                 var curso = _mapper.Map<Curso>(model);
                 curso.UserId = userId;
 
+                if (curso.QtdAlunos <= 0) throw new Exception("Quantidade de alunos inválida.");
+
                 var resuTitulo = await _cursoPersist.GetCursoByTitulo(curso.Descricao);
-                if (resuTitulo.Length > 0 ) throw new Exception("Já existem cursos com este nome.");
+                if (resuTitulo.Length > 0) throw new Exception("Já existem cursos com este nome.");
 
                 var resuQuery = await _cursoPersist.GetAllCursosByDatasAsync(curso.DataInicio, curso.DataTermino);
-                if(resuQuery.Length > 0) throw new Exception("Existe(m) curso(s) planejados(s) dentro do período informado.");
+                if (resuQuery.Length > 0) throw new Exception("Existe(m) curso(s) planejados(s) dentro do período informado.");
 
                 if (curso.DataInicio >= DateTime.Now &&
                     curso.DataTermino > curso.DataInicio)
@@ -149,9 +151,14 @@ namespace Cursos_API.Application
             }
         }
 
-        public Task<CursoDto[]> GetAllCursosByUserIdAsync(int userId)
+        public async Task<CursoDto[]> GetAllCursosByUserIdAsync(int userId)
         {
-            throw new NotImplementedException();
+            var curso = await _cursoPersist.GetAllCursosByUserIdAsync(userId);
+            if (curso == null) return null;
+
+            var resultado = _mapper.Map<CursoDto[]>(curso);
+
+            return resultado;
         }
 
         public async Task<CursoDto> GetCursoByIdAsync(int cursoId)
@@ -181,14 +188,10 @@ namespace Cursos_API.Application
                 model.CursoId = cursoId;
                 model.UserId = userId;
 
-                if ( (model.DataInicio < curso.DataInicio || model.DataInicio > curso.DataTermino) && 
-                     (model.DataInicio > curso.DataInicio || model.DataInicio > curso.DataTermino) )
-                {
-                    var resuQuery = await _cursoPersist.GetAllCursosByDatasAsync(model.DataInicio, model.DataTermino);
+                    var resuQuery = await _cursoPersist.GetCursosByDatasForUpdateAsync(cursoId, model.DataInicio, model.DataTermino);
 
                     if (resuQuery.Length > 0) throw new Exception(
                         "Existe(m) curso(s) planejados(s) dentro do período informado.");
-                }
 
 
                 _mapper.Map(model, curso);

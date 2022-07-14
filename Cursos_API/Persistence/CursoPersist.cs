@@ -71,7 +71,6 @@ namespace Cursos_API.Persistence
         public async Task<Curso> GetCursoByIdAsync(int cursoId)
         {
             IQueryable<Curso> query = _context.Cursos;
-                //.Include(i => i.Categoria);
 
             query = query.Where(w => w.CursoId == cursoId &&
                                 w.Status == true);
@@ -85,6 +84,21 @@ namespace Cursos_API.Persistence
 
             query = query.Where(w => w.Descricao.ToLower() == titulo.ToLower() &&
                                      w.Status == true);
+
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Curso[]> GetCursosByDatasForUpdateAsync(int cursoId, DateTime dataInicio, DateTime dataFinal)
+        {
+            IQueryable<Curso> query = _context.Cursos
+                .Include(i => i.Categoria)
+                .Include(i => i.User);
+
+            query = query.Where(w => ((dataInicio >= w.DataInicio && dataInicio <= w.DataTermino) ||
+                                     (dataFinal >= w.DataInicio && dataFinal <= w.DataTermino) ||
+                                     (w.DataInicio >= dataInicio && w.DataInicio <= dataFinal)) &&
+                                     (w.CursoId != cursoId) &&
+                                     (w.Status == true));
 
             return await query.ToArrayAsync();
         }
