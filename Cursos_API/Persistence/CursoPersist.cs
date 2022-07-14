@@ -83,7 +83,8 @@ namespace Cursos_API.Persistence
         {
             IQueryable<Curso> query = _context.Cursos;
 
-            query = query.Where(w => w.CursoNome.ToLower() == titulo.ToLower());
+            query = query.Where(w => w.Descricao.ToLower() == titulo.ToLower() &&
+                                     w.Status == true);
 
             return await query.ToArrayAsync();
         }

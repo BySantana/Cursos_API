@@ -15,6 +15,8 @@ namespace Cursos_API.Application.Interfaces
         Task<CursoDto[]> GetAllCursosAsync();
         Task<CursoDto[]> GetAllCursosByUserIdAsync(int userId);
         Task<CursoDto[]> GetAllCursosByDataAsync(DateTime data);
+        Task<CursoDto[]> GetAllCursosByDatasAsync(DateTime dataInicio, DateTime dataTermino);
+
 
     }
 }

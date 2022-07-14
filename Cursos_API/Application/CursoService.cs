@@ -30,7 +30,7 @@ namespace Cursos_API.Application
                 var curso = _mapper.Map<Curso>(model);
                 curso.UserId = userId;
 
-                var resuTitulo = await _cursoPersist.GetCursoByTitulo(curso.CursoNome);
+                var resuTitulo = await _cursoPersist.GetCursoByTitulo(curso.Descricao);
                 if (resuTitulo.Length > 0 ) throw new Exception("Já existem cursos com este nome.");
 
                 var resuQuery = await _cursoPersist.GetAllCursosByDatasAsync(curso.DataInicio, curso.DataTermino);
@@ -120,6 +120,23 @@ namespace Cursos_API.Application
             try
             {
                 var cursos = await _cursoPersist.GetAllCursosByDataAsync(data);
+                if (cursos == null) return null;
+
+                var resultado = _mapper.Map<CursoDto[]>(cursos);
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<CursoDto[]> GetAllCursosByDatasAsync(DateTime dataInicio, DateTime dataTermino)
+        {
+            try
+            {
+                var cursos = await _cursoPersist.GetAllCursosByDatasAsync(dataInicio, dataTermino);
                 if (cursos == null) return null;
 
                 var resultado = _mapper.Map<CursoDto[]>(cursos);

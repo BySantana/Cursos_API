@@ -18,7 +18,9 @@ namespace Cursos_API.Persistence
         public async Task<Log[]> GetAllLogsAsync()
         {
             IQueryable<Log> query = _context.Logs
-                .Include(l => l.Curso);
+                .Include(l => l.Curso)
+                .Include(l => l.User)
+                .OrderByDescending(o => o.DataAtualizacao);
 
 
             return await query.ToArrayAsync();

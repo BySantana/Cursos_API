@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cursos_API.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class LogsController : ControllerBase
@@ -22,6 +22,7 @@ namespace Cursos_API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+
             try
             {
                 var logs = await _logService.GetAllLogsAsync();

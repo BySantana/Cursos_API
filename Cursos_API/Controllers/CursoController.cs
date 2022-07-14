@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace Cursos_API.Controllers
@@ -41,12 +42,51 @@ namespace Cursos_API.Controllers
             }
         }
 
-        [HttpGet("curso/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             try
             {
                 var curso = await _cursoService.GetCursoByIdAsync(id);
+                if (curso == null) return NoContent();
+
+                return Ok(curso);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpGet("curso/{data}")]
+        public async Task<IActionResult> GetAllCursosByDataAsync(string data)
+        {
+            try
+            {
+                var parsedDate = DateTime.Parse(data);
+
+                var curso = await _cursoService.GetAllCursosByDataAsync(parsedDate);
+                if (curso == null) return NoContent();
+
+                return Ok(curso);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpGet("cursos/{dataInicio}/{dataTermino}")]
+        public async Task<IActionResult> GetAllCursosByDatasAsync(string dataInicio, string dataTermino)
+        {
+            try
+            {
+                var parsedDate = DateTime.Parse(dataInicio);
+                var parsedDate1 = DateTime.Parse(dataTermino);
+
+                var curso = await _cursoService.GetAllCursosByDatasAsync(parsedDate, parsedDate1);
                 if (curso == null) return NoContent();
 
                 return Ok(curso);
