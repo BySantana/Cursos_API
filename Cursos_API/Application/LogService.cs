@@ -76,9 +76,21 @@ namespace Cursos_API.Application
             }
         }
 
-        public Task<LogDto> GetLogByIdAsync(int logId)
+        public async Task<LogDto> GetLogByIdAsync(int logId)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var log = await _logPersist.GetLogByIdAsync(logId);
+                if (log == null) return null;
+
+                var resultado = _mapper.Map<LogDto>(log);
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<bool> UpdateLog(int cursoId, LogDto model)

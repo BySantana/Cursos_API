@@ -96,32 +96,5 @@ namespace Cursos_API.Controllers
             }
         }
 
-        [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUser(UserUpdateDto userUpdateDto)
-        {
-            try
-            {
-                if (userUpdateDto.UserName != User.GetUserName())
-                    return Unauthorized("Usuário Inválido");
-
-                var user = await _accountService.GetUserByUserNameAsync(User.GetUserName());
-                if (user == null) return Unauthorized("Usuário Inválido");
-
-                var userReturn = await _accountService.UpdateAccount(userUpdateDto);
-                if (userReturn == null) return NoContent();
-
-                return Ok(new
-                {
-                    userName = userReturn.UserName,
-                    PrimeroNome = userReturn.PrimeiroNome,
-                    token = _tokenService.CreateToken(userReturn).Result
-                });
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar Atualizar Usuário. Erro: {ex.Message}");
-            }
-        }
     }
 }

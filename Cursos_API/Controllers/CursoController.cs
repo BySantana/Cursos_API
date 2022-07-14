@@ -38,7 +38,7 @@ namespace Cursos_API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar Posts. Erro: {ex.Message}");
+                    $"Erro ao tentar recuperar Cursos. Erro: {ex.Message}");
             }
         }
 
@@ -55,7 +55,7 @@ namespace Cursos_API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+                    $"Erro ao tentar recuperar Cursos. Erro: {ex.Message}");
             }
         }
 
@@ -74,7 +74,7 @@ namespace Cursos_API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+                    $"Erro ao tentar recuperar Cursos. Erro: {ex.Message}");
             }
         }
 
@@ -94,7 +94,7 @@ namespace Cursos_API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+                    $"Erro ao tentar recuperar Cursos. Erro: {ex.Message}");
             }
         }
 
@@ -111,7 +111,7 @@ namespace Cursos_API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar adicionar curso. Erro: {ex.Message}");
+                    $"Erro ao tentar adicionar Curso. Erro: {ex.Message}");
             }
         }
 
@@ -128,7 +128,7 @@ namespace Cursos_API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar atualizar curso. Erro: {ex.Message}");
+                    $"Erro ao tentar atualizar Curso. Erro: {ex.Message}");
             }
         }
 
@@ -146,13 +146,13 @@ namespace Cursos_API.Controllers
                 }
                 else
                 {
-                    throw new Exception("Não foi possível deletar este curso");
+                    throw new Exception("Não foi possível deletar este Curso");
                 }
             }
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar deletar eventos. Erro: {ex.Message}");
+                    $"Erro ao tentar deletar Curso. Erro: {ex.Message}");
             }
         }
     }

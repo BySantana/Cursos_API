@@ -10,6 +10,5 @@ namespace Cursos_API.Application.Interfaces
         Task<UserUpdateDto> GetUserByUserNameAsync(string userName);
         Task<SignInResult> CheckUserPasswordAsync(UserUpdateDto userUpdateDto, string password);
         Task<UserUpdateDto> CreateAccountAsync(UserDto userDto);
-        Task<UserUpdateDto> UpdateAccount(UserUpdateDto userUpdateDto);
     }
 }
